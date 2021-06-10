@@ -1,2 +1,2 @@
 # fetch
-General purpose http client.
+A general purpose http client. Responses implement fs.File interfaces.
