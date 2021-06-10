@@ -40,7 +40,7 @@ func (t fileInfo) Name() string {
 }
 
 func (t fileInfo) Size() int64 {
-	size, _ := strconv.ParseInt(t.header.Get("Conten-Length"), 10, 64)
+	size, _ := strconv.ParseInt(t.header.Get("Content-Length"), 10, 64)
 	return size
 }
 
