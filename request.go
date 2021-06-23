@@ -99,6 +99,12 @@ func (t Request) Form(data url.Values) *Request {
 	return &t
 }
 
+func (t Request) JSON(v interface{}) *Request {
+	t.body, _ = json.Marshal(v)
+	t.bodyMime = "application/json; charset=utf-8"
+	return &t
+}
+
 func (t Request) Limit(l *rate.Limiter) *Request {
 	t.limiter = l
 	return &t
