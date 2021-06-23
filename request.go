@@ -115,6 +115,20 @@ func (t Request) Open() (fs.File, error) {
 	}, nil
 }
 
+func (t Request) Read() ([]byte, error) {
+	f, err := t.Open()
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	return ioutil.ReadAll(f)
+}
+
+func (t Request) ReadString() (string, error) {
+	b, err := t.Read()
+	return string(b), err
+}
+
 func (t Request) ReadJSON(v interface{}) error {
 	f, err := t.Open()
 	if err != nil {
