@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -127,7 +126,7 @@ func (t Request) Read() ([]byte, error) {
 		return nil, err
 	}
 	defer f.Close()
-	return ioutil.ReadAll(f)
+	return io.ReadAll(f)
 }
 
 func (t Request) ReadString() (string, error) {
@@ -169,11 +168,13 @@ func (t Request) Download(name string) error {
 	}
 	defer f.Close()
 
+	// TODO: avoid full memory copy (stream to a temp file and rename it)
+
 	data, err := io.ReadAll(f)
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(name, data, os.FileMode(0600))
+	return os.WriteFile(name, data, os.FileMode(0600))
 }
 
 func (t Request) Err() error {
@@ -208,7 +209,7 @@ func (t *Request) do() (*http.Response, *http.Request, error) {
 func processErrorResponse(req *http.Request, res *http.Response) error {
 	defer res.Body.Close()
 
-	buf, err := ioutil.ReadAll(res.Body)
+	buf, err := io.ReadAll(res.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read error body: %w", err)
 	}
