@@ -44,7 +44,7 @@ func New(method, url string) *Request {
 	return &Request{
 		client: http.DefaultClient,
 		method: method,
-		url:    url,
+		url:    strings.SplitN(url, "?", 2)[0],
 	}
 }
 
