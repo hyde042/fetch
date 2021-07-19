@@ -264,19 +264,19 @@ func (t *Request) request() (*http.Request, error) {
 
 func injectPairs(vals url.Values, ps []pair) url.Values {
 	for _, p := range ps {
-		var vStr string
 		for _, vi := range p.values {
+			var vStr string
 			switch v := vi.(type) {
 			case []byte:
 				vStr = string(v)
 			default:
 				vStr = fmt.Sprint(v)
 			}
+			if vStr == "" || vStr == "0" || vStr == "false" {
+				continue
+			}
+			vals[p.key] = append(vals[p.key], vStr)
 		}
-		if vStr == "" || vStr == "0" || vStr == "false" {
-			continue
-		}
-		vals[p.key] = append(vals[p.key], vStr)
 	}
 	return vals
 }
