@@ -272,7 +272,7 @@ func injectPairs(vals url.Values, ps []pair) url.Values {
 			default:
 				vStr = fmt.Sprint(v)
 			}
-			if vStr == "" || vStr == "0" || vStr == "false" {
+			if vStr == "" {
 				continue
 			}
 			vals[p.key] = append(vals[p.key], vStr)
